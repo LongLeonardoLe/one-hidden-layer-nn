@@ -9,7 +9,7 @@ def read_data(path):
     data_array = array("B", fdata.read())
     fdata.close()
     data_list = data_array.tolist()
-    for i in range(size):
+    for i in range(len(data_lis)):
         data_list[i] /= 255.0
     return size, rows, cols, data_list
 
