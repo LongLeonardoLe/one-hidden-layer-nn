@@ -9,7 +9,7 @@ def read_data(path):
     data_array = array("B", fdata.read())
     fdata.close()
     data_list = data_array.tolist()
-    for i in range(len(data_lis)):
+    for i in range(len(data_list)):
         data_list[i] /= 255.0
     return size, rows, cols, data_list
 
@@ -37,6 +37,8 @@ def label_to_target(label):
 # calculate accuracy
 def accuracy(predictions, label, size):
     correct_num = 0.0
+    print(predictions[size/2:size/2+10])
+    print(label[size/2:size/2+10])
     for i in range(size):
         if predictions[i] == label[i]:
             correct_num += 1.0
@@ -65,11 +67,13 @@ if __name__ == "__main__":
 
     # initial weights
     weight_xh = neural_network.initial_weight(h_size,cols*rows+1)
-    weight_ho = neural_network.initial_weight(10,h_size+1)
-    
+    weight_ho = neural_network.initial_weight(o_size,h_size+1)
+
     #print(accuracy(neural_network.predict(test_data,h_size,o_size,cols,rows,weight_xh,weight_ho),test_label,test_size))
 
     # train the network
     weight_xh,weight_ho = neural_network.train_network(train_data,target,cols,rows,h_size,o_size,weight_xh,weight_ho,eta,momentum)
 
-    print(accuracy(neural_network.predict(test_data,h_size,o_size,cols,rows,weight_xh,weight_ho),test_label,test_size))
+    prediction = neural_network.predict(test_data,h_size,o_size,cols,rows,weight_xh,weight_ho)
+
+    print(accuracy(prediction,test_label,test_size))

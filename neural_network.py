@@ -25,7 +25,6 @@ def train_network(data, target, cols, rows, h_size, o_size, weight_xh, weight_ho
     prev_ho = []
 
     for i in range(size):
-        print(i)
         x = data[i:(i+rows*cols)] # 784 (28*28) input nodes
         x.append(1) # bias
         # forward from input to hidden layer and from hidden to output layer
@@ -46,12 +45,12 @@ def single_output(x, h_size, o_size, w_xh, w_ho):
     # get the output layer for 10 nodes
     hidden = forward.forward(w_xh,x,h_size-1)
     hidden.append(1)
-    o = forward.forward(w_ho,hidden,o_size)
+    output = forward.forward(w_ho,hidden,o_size)
     # find the max output node value and add it to prediction
     result = 0
 
-    for i in range(len(o)):
-        if o[i] > o[result]:
+    for i in range(len(output)):
+        if output[i] > output[result]:
             result = i
 
     return result
@@ -67,6 +66,5 @@ def predict(data, h_size, o_size, cols, rows, w_xh, w_ho):
         x.append(1) # add bias
         # add output for each input
         prediction.append(single_output(x,h_size+1,o_size,w_xh,w_ho))
-        i += rows*cols
 
     return prediction

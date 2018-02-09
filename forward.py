@@ -14,14 +14,7 @@ def sigmoid(weight, x):
     for i in range(len(x)):
         z += weight[i]*x[i]
     # apply sigma(z)
-    try:
-        result = 1/(1+exp(0-z))
-    except OverflowError:
-        if (z > 0):
-            result = 1.0
-        else:
-            result = 0.0
-    return result
+    return 1/(1+exp(0-z))
 
 # softmax operation, return the output layer
 def softmax(output):
