@@ -9,7 +9,7 @@ import exceptions
 
 # sigmoid activation function
 def sigmoid(weight, x):
-    z = 0
+    z = 0.0
     # get the dot product between w and x
     for i in range(len(x)):
         z += weight[i]*x[i]

@@ -23,14 +23,13 @@ def error_hidden(err_output, hidden, weight_ho):
 def value_update(eta, momentum, error, node_value, prev_update):
     return eta*error*node_value + momentum*prev_update
 
-# update layer-to-layer weights, eta is the learning rate
+# update hidden-to-output weights, eta is the learning rate
 def update_weights(eta, momentum, weight, error, layer, prev):
     # if the previous update weight list is empty, initial
     if not prev:
         prev = []
         for i in range(len(weight)):
             prev.append(0)
-
     # run through the previous layer (hidden)
     for i in range(len(layer)):
         # update weights to every output nodes from ith hidden node
