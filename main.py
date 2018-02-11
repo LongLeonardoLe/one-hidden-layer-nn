@@ -2,6 +2,7 @@ import struct
 import scipy as sp
 import numpy as np
 from array import array
+from sklearn.metrics import confusion_matrix
 import neural_network
 
 # preprocess data
@@ -56,7 +57,7 @@ if __name__ == "__main__":
     cols = 28
 
     # read and preprocess input files
-    train_data = data_preprocessor("mnist_train.csv")[0:10000]
+    train_data = data_preprocessor("mnist_train.csv")
     test_data = data_preprocessor("mnist_test.csv")
 
     # retrieve labels from data
@@ -80,7 +81,8 @@ if __name__ == "__main__":
     print("Before: ", before*100)
 
     # train the network
-    weight_xh, weight_ho = neural_network.train_network(train_data, target, cols, rows, h_size, o_size, weight_xh, weight_ho, eta, momentum)
+    for i in range(1):
+        weight_xh, weight_ho = neural_network.train_network(train_data, target, cols, rows, h_size, o_size, weight_xh, weight_ho, eta, momentum)
 
     prediction = neural_network.predict(test_data, h_size, o_size, cols, rows, weight_xh, weight_ho)
     after = accuracy(prediction, test_label)
