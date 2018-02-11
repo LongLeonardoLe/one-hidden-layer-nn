@@ -1,11 +1,19 @@
 # This file performs the back propagation and updates weights of the network
 
-# error for output node
+
+# error for output nodes, o_i(1-o_i)(t_i-o_i)
 def error_output(output, target):
     errorout = []
+    # loop 10 which is len(output)
     for i in range(len(output)):
-        errorout.append(output[i]*(1-output[i])*(target[i]-output[i]))
+        # target = 0.9 at i-th output
+        if i == target:
+            errorout.append(output[i]*(1.0-output[i])*(0.9-output[i]))
+        # otherwise, target = 0.1
+        else:
+            errorout.append(output[i]*(1.0-output[i])*(0.1-output[i]))
     return errorout
+
 
 # error for hidden unit
 def error_hidden(err_output, hidden, weight_ho):
@@ -16,20 +24,25 @@ def error_hidden(err_output, hidden, weight_ho):
         eo_sum = 0.0
         for j in range(len(err_output)):
             eo_sum += err_output[j]*weight_ho[j*len(hidden)+i]
-        errorhid.append(hidden[i]*(1-hidden[i])*eo_sum)
+        errorhid.append(hidden[i]*(1.0-hidden[i])*eo_sum)
     return errorhid
+
 
 # calculate the delta_w_kj which is the needed update value
 def value_update(eta, momentum, error, node_value, prev_update):
     return eta*error*node_value + momentum*prev_update
 
-# update hidden-to-output weights, eta is the learning rate
+
+# update layer-to-layer weights, eta is the learning rate
+# error is of the output layer when update hidden-to-output
+# and of the hidden for update input-to-hidden
 def update_weights(eta, momentum, weight, error, layer, prev):
     # if the previous update weight list is empty, initial
     if not prev:
         prev = []
         for i in range(len(weight)):
-            prev.append(0)
+            prev.append(0.0)
+
     # run through the previous layer (hidden)
     for i in range(len(layer)):
         # update weights to every output nodes from ith hidden node
@@ -38,5 +51,3 @@ def update_weights(eta, momentum, weight, error, layer, prev):
             delta = value_update(eta, momentum, error[j], layer[i], prev[pos])
             weight[pos] += delta
             prev[pos] = delta
-
-    return weight, prev

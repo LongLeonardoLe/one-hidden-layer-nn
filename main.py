@@ -1,9 +1,8 @@
-import struct
-import scipy as sp
 import numpy as np
-from array import array
 from sklearn.metrics import confusion_matrix
+from sklearn.metrics import accuracy_score
 import neural_network
+
 
 # preprocess data
 def data_preprocessor(file_name):
@@ -12,7 +11,8 @@ def data_preprocessor(file_name):
         output.extend(setup_vector(x) for x in in_file)
     return np.array(output, float)
 
-# Setup vector from input line
+
+# setup vector from input line
 def setup_vector(input_line):
     # get a line, split comma-based, and get float representation
     vector = input_line.split(',')
@@ -24,6 +24,7 @@ def setup_vector(input_line):
         result[value] /= 255
     return tuple(result)
 
+"""
 # from label to target array
 def label_to_target(label):
     target = []
@@ -36,7 +37,9 @@ def label_to_target(label):
             else: 
                 target.append(0.1)
     return target
+"""
 
+"""
 # calculate accuracy
 def accuracy(predictions, label):
     correct_num = 0.0
@@ -45,12 +48,13 @@ def accuracy(predictions, label):
         if predictions[i] == label[i]:
             correct_num += 1.0
     return correct_num/len(label)
+"""
 
 
 if __name__ == "__main__":
-    # constants: learning rate, momemtum, size of hidden layer, # of rows and cols
+    # constants: learning rate, momentum, size of hidden layer, # of rows and cols
     eta = 0.1
-    momentum = 0.9
+    momentum = 0.0
     h_size = 20
     o_size = 10
     rows = 28
@@ -70,20 +74,18 @@ if __name__ == "__main__":
     print(len(train_data), len(test_data), len(train_label), len(test_label))
 
     # preprocess training label to target
-    target = label_to_target(train_label)
+    #target = label_to_target(train_label)
     
     # initial weights
     weight_xh = neural_network.initial_weight(h_size, cols*rows+1)
     weight_ho = neural_network.initial_weight(o_size, h_size+1)
     
-    prediction = neural_network.predict(test_data, h_size, o_size, cols, rows, weight_xh, weight_ho)
-    before = accuracy(prediction, test_label)
-    print("Before: ", before*100)
+    #prediction = neural_network.predict(test_data, h_size, o_size, weight_xh, weight_ho)
+    #print("Before: ", accuracy_score(test_label, prediction)*100)
 
     # train the network
     for i in range(1):
-        weight_xh, weight_ho = neural_network.train_network(train_data, target, cols, rows, h_size, o_size, weight_xh, weight_ho, eta, momentum)
+        neural_network.train_network(train_data, h_size, o_size, weight_xh, weight_ho, eta, momentum)
 
-    prediction = neural_network.predict(test_data, h_size, o_size, cols, rows, weight_xh, weight_ho)
-    after = accuracy(prediction, test_label)
-    print("After: ", after*100)
+    prediction = neural_network.predict(test_data, h_size, o_size, weight_xh, weight_ho)
+    print("After: ", accuracy_score(test_label, prediction)*100)

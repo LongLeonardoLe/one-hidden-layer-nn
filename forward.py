@@ -5,7 +5,7 @@
 #   - forwards to the next layer
 
 from math import exp
-import exceptions
+
 
 # sigmoid activation function
 def sigmoid(weight, x):
@@ -14,8 +14,10 @@ def sigmoid(weight, x):
     for i in range(len(x)):
         z += weight[i]*x[i]
     # apply sigma(z)
-    return 1/(1+exp(0-z))
+    return 1.0/(1.0+exp(0.0-z))
 
+
+"""
 # softmax operation, return the output layer
 def softmax(output):
     output_sum = 0.0
@@ -25,12 +27,16 @@ def softmax(output):
     # soften the output by dividing by the sum
     for i in range(len(output)):
         output[i] /= output_sum
-    return output
+"""
 
-# forward to the next layer, size is the size of the next layer
+
+# forward to the next layer
+# size_nlayer is the size of the next layer
 # return the next layer
-def forward(weight, x, size):
+def forward(weight, x, size_nlayer):
     nlayer = []
-    for i in range(size):
+    for i in range(size_nlayer):
+        # e.g. from weight[0] -> weight[784] is weights of
+        # input[0] -> input[784] to hidden[0]
         nlayer.append(sigmoid(weight[i*len(x):(i+1)*len(x)], x))
     return nlayer
