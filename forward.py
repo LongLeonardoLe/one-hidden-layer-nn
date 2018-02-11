@@ -3,7 +3,6 @@
 #   - calculates sigmoid activation
 #   - softens the outputs using softmax operation
 #   - forwards to the next layer
-
 from math import exp
 
 
@@ -14,20 +13,7 @@ def sigmoid(weight, x):
     for i in range(len(x)):
         z += weight[i]*x[i]
     # apply sigma(z)
-    return 1.0/(1.0+exp(0.0-z))
-
-
-"""
-# softmax operation, return the output layer
-def softmax(output):
-    output_sum = 0.0
-    # get the sum of all outputs
-    for i in range(len(output)):
-        output_sum += output[i]
-    # soften the output by dividing by the sum
-    for i in range(len(output)):
-        output[i] /= output_sum
-"""
+    return 1.0/(1.0+exp(-z))
 
 
 # forward to the next layer

@@ -37,17 +37,10 @@ def value_update(eta, momentum, error, node_value, prev_update):
 # error is of the output layer when update hidden-to-output
 # and of the hidden for update input-to-hidden
 def update_weights(eta, momentum, weight, error, layer, prev):
-    # if the previous update weight list is empty, initial
-    if not prev:
-        prev = []
-        for i in range(len(weight)):
-            prev.append(0.0)
-
-    # run through the previous layer (hidden)
+    # run through the previous layer
     for i in range(len(layer)):
         # update weights to every output nodes from ith hidden node
         for j in range(len(error)):
             pos = i+j*len(layer)
-            delta = value_update(eta, momentum, error[j], layer[i], prev[pos])
-            weight[pos] += delta
-            prev[pos] = delta
+            prev[pos] = value_update(eta, momentum, error[j], layer[i], prev[pos])
+            weight[pos] += prev[pos]

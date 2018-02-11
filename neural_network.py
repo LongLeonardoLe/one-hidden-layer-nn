@@ -1,6 +1,7 @@
 import forward
 import backprop
 import random
+import time
 
 
 # initial weights from 1 layer to another in the network in the range (-0.05,0.05)
@@ -21,9 +22,13 @@ def train_network(data, h_size, o_size, weight_xh, weight_ho, eta, momentum):
     if not weight_ho:  # hidden to output
         weight_ho = initial_weight(o_size, h_size+1) 
 
-    # previous update weight
+    # initial previous update weight
     prev_xh = []
     prev_ho = []
+    for i in range(h_size*(28*28+1)):
+        prev_xh.append(0.0)
+    for i in range(o_size*(h_size+1)):
+        prev_ho.append(0.0)
 
     # loops 60000 which is len(data)
     for i in range(len(data)):
@@ -34,7 +39,7 @@ def train_network(data, h_size, o_size, weight_xh, weight_ho, eta, momentum):
 
         # forward from hidden to output
         output = forward.forward(weight_ho, hidden, o_size)
-
+        
         # calculate error output layers, data[i][0] is the target
         error_output = backprop.error_output(output, data[i][0])
         # calculate error hidden layers
