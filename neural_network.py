@@ -24,8 +24,9 @@ def train_network(data, target, cols, rows, h_size, o_size, weight_xh, weight_ho
     prev_ho = []
 
     for i in range(len(data)):
-        print(i)
+        # take the input
         x = data[i][1:]
+
         # forward from input to hidden
         hidden = [1] # initial contain only bias
         hidden.extend(forward.forward(weight_xh, x, h_size))
@@ -33,7 +34,7 @@ def train_network(data, target, cols, rows, h_size, o_size, weight_xh, weight_ho
         output = forward.forward(weight_ho, hidden, o_size)
 
         # calculate errors in hidden and output layers
-        error_output = backprop.error_output(output, target[i:(i+o_size)])
+        error_output = backprop.error_output(output, target[i*o_size:(i+1)*o_size])
         error_hidden = backprop.error_hidden(error_output, hidden, weight_ho)
 
         # update weights
@@ -53,7 +54,7 @@ def single_output(x, h_size, o_size, w_xh, w_ho):
 
     # find the max output node value and add it to prediction
     result = 0
-    for i in range(1,len(output)):
+    for i in range(1, len(output)):
         if output[i] > output[result]:
             result = i
 

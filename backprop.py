@@ -35,7 +35,7 @@ def update_weights(eta, momentum, weight, error, layer, prev):
         # update weights to every output nodes from ith hidden node
         for j in range(len(error)):
             pos = i+j*len(layer)
-            delta = value_update(eta,momentum,error[j],layer[i],prev[pos])
+            delta = value_update(eta, momentum, error[j], layer[i], prev[pos])
             weight[pos] += delta
             prev[pos] = delta
 
